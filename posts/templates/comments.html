@@ -1,0 +1,43 @@
+{% load user_filters %}
+
+{% if user.is_authenticated %}
+    <form method="post" action="{% url 'posts:add_comment' post.author.username post.id %}">
+        {% csrf_token %}
+        <h5 >Добавить комментарий:</h5>
+
+                 {% for field in form %}
+                    <div aria-required={% if field.field.required %}"true"{% else %}"false"{% endif %}>
+                          <label for="{{ field.id_for_label }}" class="col-md-4 col-form-label text-md-right">{{ field.label }}{% if field.field.required %}<span class="required">*</span>{% endif %}</label>
+
+                                    {{ field|addclass:"form-control" }}
+                                    {% if field.help_text %}
+                                    <small id="{{ field.id_for_label }}-help" class="form-text text-muted">{{ field.help_text|safe }}</small>
+                                   {% endif %}
+
+                 {% endfor %}
+            <br>
+            <button type="submit" class="btn btn-primary">Отправить</button>
+
+    </form>
+{% endif %}
+
+<!-- Комментарии -->
+{% if comments %}
+<h5 class="card-header">Все комментарии</h5>
+{% for item in comments %}
+<div class="media card mb-4">
+
+    <div class="media-body card-body">
+        <div class="jumbotron">
+            <a href="{% url 'posts:profile' item.author.username %}"
+               name="comment_{{ item.id }}">
+                {{ item.author.username }}
+            </a>
+            <p>{{ item.text | linebreaksbr }}</p>
+            <p>Прочитано ли: {{ item.is_readed }}</p>
+
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endif %}

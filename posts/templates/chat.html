@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}
+  Личные сообщения
+{% endblock %}
+{% load thumbnail %}
+{% block header %}
+
+{% if request.user == chat.user1 %}
+<div class="title">
+    Диалог с {{ chat.user2.get_full_name }}
+</div>
+{% else %}
+<div class="title">
+    Диалог с {{ chat.user1.get_full_name }}
+</div>
+{% endif %}
+{% endblock %}
+
+
+{% block content %}
+<div class="col-4 col-12-medium">
+    <div id="sidebar">
+        <section class="box">
+
+        </section>
+    </div>
+</div>
+
+<div class="col-8 col-12-medium imp-medium">
+    {% if user.is_authenticated %}
+
+    <form method="post" action="{% url 'posts:message' chat.id %}">
+        {% csrf_token %}
+        {% for field in form %}
+        <div aria-required={% if field.field.required %}"true"{% else %}"false"{% endif %}>
+          {{ field }}
+          {% if field.help_text %}
+          <small id="{{ field.id_for_label }}-help" class="form-text text-muted">{{ field.help_text|safe }}</small>
+          {% endif %}
+        </div>
+        {% endfor %}
+        <br>
+        <button type="submit" class="btn btn-primary">Отправить</button>
+    </form>
+
+    {% endif %}
+
+    {% if messages %}
+
+      {% for message in messages %}
+        {% if message.sender == request.user %}
+          <ul class="style3">
+            <li>
+               {% if message.sender.profile %}
+                 {% load thumbnail %}
+                 {% thumbnail message.sender.profile.avatar "50x50" crop="center" upscale=True as im %}
+                   <img class="image left" style="border-radius: 120px;" src="{{ im.url }}"/>
+                 {% endthumbnail %}
+               {% endif %}
+                <p align=”left”> {{message.text}}</p>
+                <p align=”left”>{{message.msg_date}}  Прочитано: {{message.is_readed}}</p>
+            </li>
+          </ul>
+
+      {% else %}
+         <ul class="style3">
+           <li>
+             {% if message.sender.profile %}
+               {% load thumbnail %}
+               {% thumbnail message.sender.profile.avatar "50x50" crop="center" upscale=True as im %}
+               <img class="image left" style="border-radius: 120px;" src="{{ im.url }}"/>
+               {% endthumbnail %}
+             {% endif %}
+              <p align=”right”>{{message.text}}</p>
+              <p align=”right”>{{message.msg_date}}  Прочитано: {{message.is_readed}}</p>
+            </li>
+         </ul>
+       {% endif %}
+     {% endfor %}
+
+    {% endif %}
+
+{% if page.has_other_pages %}
+  {% include "paginator.html" %}
+{% endif %}
+
+</div>
+{% endblock %}

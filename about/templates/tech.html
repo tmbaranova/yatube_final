@@ -1,0 +1,39 @@
+<!-- templates/about/author.html -->
+{% extends "base.html" %}
+{% block title %}О технологиях проекта{% endblock %}
+
+{% block header %} <div class="title">О технологиях</div> {% endblock %}
+{% block content %}
+{% load user_filters %}
+
+<div class="col-4 col-12-medium">
+  <div id="sidebar">
+     <section class="box">
+
+     </section>
+  </div>
+</div>
+
+<div class="col-8 col-12-medium imp-medium">
+    <p> Этот сайт был создан в атмосфере любви, вдохновения и подгорающих дедлайнов.
+        <br>
+        Все технологии этого мира были бы бессильны, если бы не было гугла, StackOverflow, отчаянной удачи и канала Project в слаке.
+        <br>
+        О найденных вами багах прошу сообщить в телеграм @tmb2507
+        <br>
+        Спасибо, что заглянули!
+        <br>
+
+    </p>
+    <p>
+    {% load thumbnail %}
+      {% thumbnail "1.jpg" "500x270" crop="center" upscale=True as im %}
+        <img class="image featured" src="{{ im.url }}">
+      {% endthumbnail %}
+    </p>
+
+    <p>  </p>
+
+</div>
+
+{% endblock %}

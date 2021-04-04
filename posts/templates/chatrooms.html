@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}
+ Личные сообщения
+{% endblock %}
+{% load thumbnail %}
+
+{% block header %}
+<div class="title">Ваши диалоги</div>
+{% endblock %}
+
+{% block content %}
+<div class="row gtr-150">
+   {% include "author_info.html" with author=request.user  %}
+      <div class="col-8 col-12-medium imp-medium">
+
+        {% for chat in chatrooms %}
+
+          {% if chat.user1 != request.user %}
+            <ul class="style3">
+                {% if chat.user1.profile %}
+                  {% load thumbnail %}
+                  {% thumbnail chat.user1.profile.avatar "120x120" crop="center" upscale=True as im %}
+                   <img class="image" style="border-radius: 120px;" src="{{ im.url }}"/>
+                  {% endthumbnail %}
+                {% endif %}
+                  <h2>{{chat.user1.username}}</h2>
+                   <a href="{% url 'posts:chat' chat.id %}">
+                             открыть диалог
+                            </a>
+            </ul>
+          {% endif %}
+
+          {% if chat.user2 != request.user %}
+            <ul class="style3">
+              <div class="col-6 col-12-small">
+                {% if chat.user2.profile %}
+                 {% load thumbnail %}
+                 {% thumbnail chat.user2.profile.avatar "120x120" crop="center" upscale=True as im %}
+                  <img class="image" style="border-radius: 120px;" src="{{ im.url }}"/>
+                 {% endthumbnail %}
+                {% endif %}
+              </div>
+                <h2>{{chat.user2.username}}</h2>
+                  <a href="{% url 'posts:chat' chat.id %}">
+                              открыть диалог
+                   </a>
+            </ul>
+          {% endif %}
+        {% endfor %}
+      </div>
+</div>
+{% endblock %}

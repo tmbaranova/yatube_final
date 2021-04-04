@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Новые комментарии к вашим постам
+{% endblock %}
+
+{% load thumbnail %}
+
+{% block header %}
+<div class="title">Новые события для {{request.user.username}}</div>
+{% endblock %}
+
+
+{% block content %}
+<div class="row gtr-150">
+  {% include "author_info.html" with author=request.user  %}
+    <div class="col-8 col-12-medium imp-medium">
+
+    <div id="content">
+      {% if unreaded_comments %}
+      <ul class="style3">
+        <h2>Новые комментарии </h2>
+         {% for comment in unreaded_comments %}
+            <li>
+              <article class="box post-excerpt">
+                  {% if comment.author.profile %}
+                   {% load thumbnail %}
+                    {% thumbnail comment.author.profile.avatar "120x120" crop="center" upscale=True as im %}
+                    <img class="image left" style="border-radius: 120px;" src="{{ im.url }}"/>
+                    {% endthumbnail %}
+                    {% endif %}
+
+                    <p>{{comment.author.get_full_name}}</p>
+                        <a name="user_{{ comment.author.username }}" href="{% url 'posts:profile' comment.author.username %}">
+                            @{{ comment.author.username }}
+                        </a>
+                    <p>
+                     {{comment.text}}
+                    </p>
+
+                     <p>
+                       <a  href="{% url 'posts:post' request.user.username comment.post.id %}">
+                        ссылка на пост
+                       </a>
+                     </p>
+              </article>
+            </li>
+         {% endfor %}
+      </ul>
+    {% endif %}
+
+{% if new_followers %}
+    <ul class="style3">
+         <h2>Новые подписчики </h2>
+         {% for follower in new_followers %}
+            <li>
+              <article class="box post-excerpt">
+                  {% if follower.user.profile %}
+                  {% load thumbnail %}
+                   {% thumbnail follower.user.profile.avatar "120x120" crop="center" upscale=True as im %}
+                   <img class="image left" style="border-radius: 120px;" src="{{ im.url }}"/>
+                   {% endthumbnail %}
+                   {% endif %}
+
+                    <p>{{follower.user.get_full_name}}</p>
+                        <a name="user_{{ follower.user.username }}" href="{% url 'posts:profile' follower.user.username %}">
+                              @{{ follower.user.username }}
+                        </a>
+
+              </article>
+            </li>
+         {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if new_likes %}
+
+    <ul class="style3">
+         <h2>Новые лайки </h2>
+         {% for like in new_likes %}
+            <li>
+              <article class="box post-excerpt">
+                 {% if like.user.profile %}
+                 {% load thumbnail %}
+                   {% thumbnail like.user.profile.avatar "120x120" crop="center" upscale=True as im %}
+                       <img class="image left" style="border-radius: 120px;" src="{{ im.url }}"/>
+                       {% endthumbnail %}
+                       {% endif %}
+
+                      <p>
+                      {% load thumbnail %}
+                      {% thumbnail "like2.jpg" "40x40" crop="center" upscale=True as im %}
+                      <img class="card-img" style="border-radius: 120px;" src="{{ im.url }}"/>
+                       {% endthumbnail %}
+                       {{like.user.get_full_name}}</p>
+                       <p> <a name="user_{{ like.user.username }}" href="{% url 'posts:profile' like.user.username %}">
+                              @{{ like.user.username }}
+                       </a></p>
+
+
+                       <p> <a href="{% url 'posts:post' like.user.username like.publication.id%}">
+                              ссылка на пост
+                            </a></p>
+              </article>
+           </li>
+         {% endfor %}
+    </ul>
+    {% endif %}
+
+     {% if new_dislikes %}
+        <ul class="style3">
+           <h2>Новые дизлайки </h2>
+             {% for dislike in new_dislikes %}
+               <li>
+                 <article class="box post-excerpt">
+                     {% if dislike.user.profile %}
+                      {% load thumbnail %}
+                      {% thumbnail dislike.user.profile.avatar "120x120" crop="center" upscale=True as im %}
+                      <img class="image left" style="border-radius: 120px;" src="{{ im.url }}"/>
+                       {% endthumbnail %}
+                       {% endif %}
+
+                       <p> {% load thumbnail %}
+                        {% thumbnail "dislike2.jpg" "40x40" crop="center" upscale=True as im %}
+                        <img class="card-img" style="border-radius: 120px;" src="{{ im.url }}"/>
+                        {% endthumbnail %}
+                         {{dislike.user.get_full_name}}</p>
+                          <p> <a name="user_{{ dislike.user.username }}" href="{% url 'posts:profile' dislike.user.username %}">
+                              @{{ dislike.user.username }}
+                          </a></p>
+
+                           <p><a href="{% url 'posts:post' dislike.user.username dislike.publication.id%}">
+                              ссылка на пост
+                            </a></p>
+                 </article>
+              </li>
+         {% endfor %}
+        </ul>
+
+{% endif %}
+    </div>
+    </div>
+</div>
+{% endblock content %}

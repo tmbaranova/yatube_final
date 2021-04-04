@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Страница записи {{post.text}}
+{% endblock %}
+
+{% load thumbnail %}
+
+{% block header %}
+
+{% endblock %}
+
+{% block content %}
+<div class="row gtr-150">
+ {% include "author_info.html" with author=post.author  %}
+     <div class="col-8 col-12-medium imp-medium">
+  {% include "post_item.html" with post=post %}
+  {% include "comments.html" with comments=comments%}
+     </div>
+</div>
+
+{% endblock content %}

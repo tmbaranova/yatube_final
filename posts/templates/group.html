@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}
+    Записи сообщества {{group.title}}
+{% endblock %}
+{% load thumbnail %}
+{% block header %}
+<div class="title">Записи сообщества {{ group.title }}</div>
+{% endblock %}
+
+{% block content %}
+<div class="row gtr-150">
+  <div class="col-4 col-12-medium">
+      <div id="sidebar">
+          <section class="box">
+              <header>
+                <h2> {{ group.title }} </h2>
+                  <p> {{ group.description }} </p>
+              </header>
+          </section>
+      </div>
+  </div>
+   <div class="col-8 col-12-medium imp-medium">
+
+     {% for post in page %}
+      {% include "post_item.html" with post=post %}
+     {% endfor %}
+
+       {% if page.has_other_pages %}
+       {% include "paginator.html" with page=page %}
+       {% endif %}
+   </div>
+</div>
+{% endblock %}
+

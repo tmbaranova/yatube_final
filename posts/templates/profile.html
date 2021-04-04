@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Профиль пользователя {{author.username}}
+{% endblock %}
+
+
+{% block header %}
+<div class="title">Профиль пользователя {{author.username}}</div>
+{% endblock %}
+
+{% block content %}
+<div class="row gtr-150">
+ {% include "author_info.html" with author=author chat=chat %}
+    <div class="col-8 col-12-medium imp-medium">
+      {% for post in page %}
+      {% include "post_item.html" with post=post %}
+       {% endfor %}
+
+       {% if page.has_other_pages %}
+       {% include "paginator.html" with page=page %}
+       {% endif %}
+
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,35 @@
+ <div class="col-4 col-12-medium">
+   <div id="sidebar">
+     <section class="box">
+       <h2>Популярные авторы:</h2>
+          <ul class="style3">
+
+            {% for user in popular_authors %}
+              <li>
+              {% load thumbnail %}
+                  {% thumbnail user.profile.avatar "100x100" crop="center" upscale=True as im %}
+                  <p><a href="{% url 'posts:profile' user.username %}"><img style="border-radius: 120px;" src="{{ im.url }}"/></a></p>
+                   {% endthumbnail %}
+                  <p>{{user.get_full_name}}</p>
+                  </li>
+            {% endfor %}
+          </ul>
+     </section>
+     <section class="box">
+         <header>
+             <br>
+             <h2>Популярные группы:</h2>
+         </header>
+         <ul class="style3">
+         {% for group in popular_groups %}
+				<li>
+                  <p><a class="card-link muted" href="{% url 'posts:group_posts' group.slug %}">
+                                 #{{ group.title }}
+                  </a></p>
+                </li>
+         {% endfor %}
+             </ul>
+     </section>
+   </div>
+ </div>
+

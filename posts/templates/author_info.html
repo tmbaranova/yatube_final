@@ -1,0 +1,78 @@
+<div class="col-4 col-12-medium">
+  <div id="sidebar">
+    <section class="box">
+      <header>
+		<h2>{{author.get_full_name}}</h2>
+      </header>
+
+        <ul class="style2">
+            <li>
+				<article class="box post-excerpt">
+                   {{author.username}}
+                </article>
+            </li>
+
+               {% if author.profile %}
+                 <li>
+					<article class="box post-excerpt">
+                       {% load thumbnail %}
+                        {% thumbnail author.profile.avatar "220x220" crop="center" upscale=True as im %}
+                          <img class="card-img" style="border-radius: 120px;" src="{{ im.url }}"/>
+                       {% endthumbnail %}
+                    </article>
+                 </li>
+
+                 <li>
+					<article class="box post-excerpt">
+                       Об авторе: {{author.profile.info}}
+                    </article>
+                 </li>
+               {% endif %}
+
+            <li>
+                <article class="box post-excerpt">
+                    Подписчиков: {{author.following.count}} <br />
+                    Подписан: {{author.follower.count}} <br />
+                    Записей: {{author.posts.count}}
+                </article>
+            </li>
+
+            {% if request.user != author %}
+            <li>
+                <article class="box post-excerpt">
+                    {% if is_follower %}
+                    <a class="button style1"
+                       href="{% url 'posts:profile_unfollow' author.username %}" role="button">
+                       Отписаться
+                    </a>
+                    {% else %}
+                    <a class="button style1"
+                       href="{% url 'posts:profile_follow' author.username %}" role="button">
+                        Подписаться
+                    </a>
+                    {% endif %}
+                    <br>
+                    <br>
+                    {% if not chat %}
+                    <a class="button style1"
+                       href="{% url 'posts:create_chat' author.username %}" role="button">
+                        Отправить сообщение
+                    </a>
+                    {% endif %}
+                    {% if chat %}
+                    <a class="button style1"
+                       href="{% url 'posts:chat' chat.id %}" role="button">
+                        Отправить сообщение
+                    </a>
+                    {% endif %}
+                </article>
+            </li>
+            {% endif %}
+
+
+        </ul>
+
+    </section>
+  </div>
+</div>
+

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Поиск{% endblock %}
+{% block header %}
+{% if query %}
+<div class="title">Посты, содержащие "{{ query }}"</div>
+{% else %}
+<div class="title">Поиск по сайту</div>
+{% endif %}
+{% endblock %}
+{% block content %}
+  {% if query %}
+    <div class="col-4 col-12-medium">
+        <div id="sidebar">
+            <section class="box">
+                <header>
+                  <h2> Число найденных постов: {{ results.count }} </h2>
+                </header>
+            </section>
+        </div>
+    </div>
+
+
+<div class="col-8 col-12-medium imp-medium">
+  {% for post in results %}
+     {% include "post_item.html" with post=post %}
+  {% endfor %}
+
+    {% if page.has_other_pages %}
+    {% include "paginator.html" with page=page %}
+    {% endif %}
+</div>
+
+  {% else %}
+
+<div class="col-4 col-12-medium">
+    <div id="sidebar">
+        <section class="box">
+            <header>
+               <h2> Введите данные в поле для поиска </h2>
+            </header>
+        </section>
+    </div>
+</div>
+
+<div class="col-8 col-12-medium imp-medium">
+    <form action="{% url 'posts:post_search' %}" method="get" role="search">
+      <p><input name="query" type="text" placeholder="Search">
+        <button type="submit" >Submit</button></p>
+    </form>
+</div>
+{% endif %}
+{% endblock %}
+

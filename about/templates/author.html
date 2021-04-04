@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Об авторе проекта{% endblock %}
+{% block header %} <div class="title">Об авторе</div> {% endblock %}
+{% block content %}
+{% load user_filters %}
+
+<div class="col-4 col-12-medium">
+  <div id="sidebar">
+    <section class="box">
+      <h2> Привет! </h2>
+        <h3> Меня зовут Таня, и я - автор этого сайта.</h3>
+      <p> Тут обязательно будет что-то еще.
+
+        <br>
+        О найденных вами багах прошу сообщить в телеграм @tmb2507
+        <br>
+        Спасибо, что заглянули!
+    </p>
+    </section>
+  </div>
+</div>
+
+<div class="col-8 col-12-medium imp-medium">
+</div>
+
+{% endblock %} 

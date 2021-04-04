@@ -1,0 +1,37 @@
+{% if page.has_other_pages %}
+
+  <ul class="pagination pagination-sm">
+    {% if page.has_previous %}
+
+      <a class="page-link" href="?page={{ page.previous_page_number }}">&laquo; Предыдущая</a>
+
+    {% else %}
+
+      <span class="page-link">&laquo; Предыдущая</span>
+
+    {% endif %}
+    {% for i in page.paginator.page_range %}
+    {% if page.number == i %}
+
+      <span class="page-link">{{ i }}
+        <span class="sr-only">(текущая)</span>
+      </span>
+
+    {% else %}
+
+      <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+
+    {% endif %}
+    {% endfor %}
+    {% if page.has_next %}
+
+      <a class="page-link" href="?page={{ page.next_page_number }}">Следующая &raquo;</a>
+
+    {% else %}
+
+      <span class="page-link">Следующая &raquo;</span>
+
+    {% endif %}
+  </ul>
+
+{% endif %} 
