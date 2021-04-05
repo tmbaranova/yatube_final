@@ -1,14 +1,15 @@
 <div id="content">
     <article class="box.post-excerpt">
+        <hr>
         <header class="style1">
             {% if post.title %}
             <h2> {{post.title}} </h2>
              {% endif %}
             </header>
 
-            <p>
+            <p align="justify">
              {% load thumbnail %}
-              {% thumbnail post.image "1500x250" crop="center" upscale=True as im %}
+              {% thumbnail post.image "1500x750" crop="center" upscale=True as im %}
                          <img class="image featured" src="{{ im.url }}">
              {% endthumbnail %}
 
@@ -42,37 +43,40 @@
          </p>
 
           {% if post.comments.exists %}
-          Комментариев: {{ post.comments.count }}
+        <p>
+          <sup> Комментариев: {{ post.comments.count }} </sup>
            {% endif %}
+        </p>
+        <p>
+           <sup>{{ post.pub_date }}</sup>
+        </p>
 
-            <p >
-           <small>{{ post.pub_date }}</small>
-            </p>
-
+        <p>
            {% if post.group %}
              <a  href="{% url 'posts:group_posts' post.group.slug %}">
-              <small> #{{ post.group.title }}</small>
+              <sup> # {{ post.group.title }}</sup>
               </a>
             {% endif %}
+        </p>
 
-        <nav>
-            <ul>
+
+            <p align="center">
                  {% if user.is_authenticated %}
-                <li>
-                   <a href="{% url 'posts:post' post.author.username post.id %}" role="button">Подробнее</a>
-                </li>
+
+                   <a class="button style2" href="{% url 'posts:post' post.author.username post.id %}" role="button">Подробнее</a>
+
                 {% endif %}
 
                 {% if user == post.author %}
-                   <li><a href="{% url 'posts:post_edit' post.author.username post.id %}" role="button">
+                   <a class="button style2" href="{% url 'posts:post_edit' post.author.username post.id %}" role="button">
                     Редактировать
-                   </a></li>
-                    <li><a href="{% url 'posts:post_delete' post.author.username post.id %}" role="button" onclick="return confirm( 'Вы уверены?')">
+                   </a>
+                    <a class="button style2" href="{% url 'posts:post_delete' post.author.username post.id %}" role="button" onclick="return confirm( 'Вы уверены?')">
                     Удалить
-                    </a></li>
+                    </a>
                    {% endif %}
-            </ul>
-        </nav>
+            </p>
+
     </article>
 </div>
 

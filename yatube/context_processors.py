@@ -21,7 +21,8 @@ def new_authors(request):
 
 def popular(request):
     annotated_authors = User.objects.annotate(
-        likes_count=Count('posts__like')).order_by("-likes_count")[:3]
+        likes_count=Count('posts__like', distinct=True)).annotate(
+        comments_count=Count('posts__comments', distinct=True)).order_by("-likes_count")[:3]
     annotated_groups = Group.objects.annotate(
         posts_count=Count('posts')).order_by("-posts_count")[:3]
     return {'popular_authors': annotated_authors,

@@ -2,22 +2,33 @@
    <div id="sidebar">
      <section class="box">
        <h2>Популярные авторы:</h2>
-          <ul class="style3">
+         <br>
+
+
+
 
             {% for user in popular_authors %}
-              <li>
+         <ul class="style3">
+
+
               {% load thumbnail %}
                   {% thumbnail user.profile.avatar "100x100" crop="center" upscale=True as im %}
-                  <p><a href="{% url 'posts:profile' user.username %}"><img style="border-radius: 120px;" src="{{ im.url }}"/></a></p>
+                  <a href="{% url 'posts:profile' user.username %}"><img style="margin-right: 25px; border-radius: 120px; float: left;" src="{{ im.url }}"/></a>
                    {% endthumbnail %}
-                  <p>{{user.get_full_name}}</p>
-<!--                  <p>Комментариев получено: {{user.comments_count}}</p>-->
-                  <p>Лайков получено: {{user.likes_count}}</p>
-                  </li>
+                  <p style= padding-left: 10px;>
+                          {{user.get_full_name}}
+                  <p>Комментариев получено: {{user.comments_count}}</p>
+                     <br>
+                     Лайков получено: {{user.likes_count}}
+                   </p>
+
+         </ul>
+         <br>
+
 
             {% endfor %}
 
-          </ul>
+
          <a class="button style2"
             href="{% url 'show_all_users' %}" role="button">
             Показать всех

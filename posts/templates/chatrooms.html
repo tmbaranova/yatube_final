@@ -15,37 +15,44 @@
 
         {% for chat in chatrooms %}
 
+          <section class="box">
+
           {% if chat.user1 != request.user %}
-            <ul class="style3">
-                {% if chat.user1.profile %}
-                  {% load thumbnail %}
-                  {% thumbnail chat.user1.profile.avatar "120x120" crop="center" upscale=True as im %}
-                   <img class="image" style="border-radius: 120px;" src="{{ im.url }}"/>
-                  {% endthumbnail %}
-                {% endif %}
-                  <h2>{{chat.user1.username}}</h2>
-                   <a href="{% url 'posts:chat' chat.id %}">
-                             открыть диалог
+
+                {% load thumbnail %}
+              {% thumbnail chat.user1.profile.avatar "70x70" crop="center" upscale=True as im %}
+                   <a href="{% url 'posts:chat' chat.id %}"><img style="margin-right: 25px; border-radius: 120px; float: left;" src="{{ im.url }}"/></a>
+                   {% endthumbnail %}
+
+                   <a style= padding-left: 10px; href="{% url 'posts:profile' chat.user1.username %}">
+                             @ {{chat.user1.username}}
                             </a>
-            </ul>
+                   <p style= padding-left: 10px;>
+                       {{ chat.user1.get_full_name }}
+                   </p>
+
+
           {% endif %}
 
           {% if chat.user2 != request.user %}
-            <ul class="style3">
-              <div class="col-6 col-12-small">
-                {% if chat.user2.profile %}
-                 {% load thumbnail %}
-                 {% thumbnail chat.user2.profile.avatar "120x120" crop="center" upscale=True as im %}
-                  <img class="image" style="border-radius: 120px;" src="{{ im.url }}"/>
-                 {% endthumbnail %}
-                {% endif %}
-              </div>
-                <h2>{{chat.user2.username}}</h2>
-                  <a href="{% url 'posts:chat' chat.id %}">
-                              открыть диалог
-                   </a>
-            </ul>
+                {% load thumbnail %}
+              {% thumbnail chat.user2.profile.avatar "70x70" crop="center" upscale=True as im %}
+                  <a href="{% url 'posts:chat' chat.id %}"><img style="margin-right: 25px; border-radius: 120px; float: left;" src="{{ im.url }}"/></a>
+                   {% endthumbnail %}
+
+                   <a style= padding-left: 10px; href="{% url 'posts:profile' chat.user2.username %}">
+                             @ {{chat.user2.username}}
+                            </a>
+                   <p style= padding-left: 10px;>
+                       {{ chat.user2.get_full_name }}
+                   </p>
+
+
           {% endif %}
+
+              </section>
+          <hr>
+
         {% endfor %}
       </div>
 </div>

@@ -95,6 +95,8 @@ class Message(models.Model):
     chat = models.ForeignKey(Chat, on_delete=models.CASCADE,
                              blank=True, null=True,
                              related_name="messages")
+    def __str__(self):
+        return self.text[:40]
 
 
 
