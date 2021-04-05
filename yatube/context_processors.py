@@ -21,10 +21,11 @@ def new_authors(request):
 
 def popular(request):
     annotated_authors = User.objects.annotate(
-        posts_count=Count('posts__comments')).order_by("-posts_count")[:3]
+        likes_count=Count('posts__likes')).order_by("-likes_count")[:3]
     annotated_groups = Group.objects.annotate(
         posts_count=Count('posts')).order_by("-posts_count")[:3]
-    return {'popular_authors': annotated_authors, 'popular_groups': annotated_groups}
+    return {'popular_authors': annotated_authors,
+            'popular_groups': annotated_groups}
 
 
 def unreaded_comments(request):

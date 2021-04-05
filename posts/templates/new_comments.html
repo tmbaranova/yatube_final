@@ -98,7 +98,7 @@
                        </a></p>
 
 
-                       <p> <a href="{% url 'posts:post' like.user.username like.publication.id%}">
+                       <p> <a href="{% url 'posts:post' request.user.username like.publication.id%}">
                               ссылка на пост
                             </a></p>
               </article>
@@ -129,7 +129,7 @@
                               @{{ dislike.user.username }}
                           </a></p>
 
-                           <p><a href="{% url 'posts:post' dislike.user.username dislike.publication.id%}">
+                           <p><a href="{% url 'posts:post' request.user.username dislike.publication.id%}">
                               ссылка на пост
                             </a></p>
                  </article>

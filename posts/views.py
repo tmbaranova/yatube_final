@@ -79,6 +79,7 @@ def profile(request, username):
     return render(request, 'profile.html', {"author": author, 'page': page, 'chat': chat, 'is_follower':is_follower})
 
 
+@login_required
 def post_view(request, username, post_id):
     post = get_object_or_404(Post, id=post_id, author__username=username)
     comments = Comment.objects.filter(post=post_id)
@@ -87,9 +88,15 @@ def post_view(request, username, post_id):
             comment.is_readed = True
             comment.save()
     form = CommentForm()
+    chat = None
+    results = Chat.objects.filter(
+                Q(user1=request.user) | Q (user1=post.author)).filter(Q(user2=request.user) | Q (user2=post.author))
+    if results:
+        chat = results[0]
+
     return render(request, 'post.html', {'post': post, 'author': post.author,
                                          'comments': comments,
-                                         'form': form},)
+                                         'form': form, 'chat': chat},)
 
 
 @login_required
