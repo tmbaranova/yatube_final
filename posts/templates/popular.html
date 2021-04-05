@@ -14,8 +14,14 @@
 <!--                  <p>Комментариев получено: {{user.comments_count}}</p>-->
                   <p>Лайков получено: {{user.likes_count}}</p>
                   </li>
+
             {% endfor %}
+
           </ul>
+         <a class="button style2"
+            href="{% url 'show_all_users' %}" role="button">
+            Показать всех
+         </a>
      </section>
      <section class="box">
          <header>
@@ -31,6 +37,10 @@
                 </li>
          {% endfor %}
              </ul>
+         <a class="button style2"
+            href="{% url 'show_all_groups' %}" role="button">
+            Показать все
+         </a>
      </section>
    </div>
  </div>

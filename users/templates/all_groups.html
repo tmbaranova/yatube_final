@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}
+ Все пользователи
+{% endblock %}
+{% load thumbnail %}
+
+{% block header %}
+<div class="title">Все группы: {{ all_groups.count }}</div>
+{% endblock %}
+
+{% block content %}
+<div class="row gtr-150">
+   {% include "author_info.html" with author=request.user  %}
+      <div class="col-8 col-12-medium imp-medium">
+
+        {% for group in all_groups %}
+
+                   <h3 >{{group.description}}</h3>
+          <a  href="{% url 'posts:group_posts' group.slug %}">
+              <small> #{{ group.title }}</small>
+              </a>
+        {% endfor %}
+      </div>
+</div>
+{% endblock %}

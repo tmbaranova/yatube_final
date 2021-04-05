@@ -8,7 +8,7 @@ from django.dispatch import receiver
 
 from .forms import CreationForm, ProfileForm
 from .models import Profile
-from posts.models import Chat, Message
+from posts.models import Chat, Message, Group
 
 User = get_user_model()
 
@@ -42,8 +42,13 @@ def create_user_profile(sender, instance, created, **kwargs):
                                chat=chat
                                )
 
+def show_all_users(request):
+    all_users = User.objects.all()
+    return render(request, 'all_users.html', {'all_users': all_users})
 
-
+def show_all_groups(request):
+    all_groups = Group.objects.all()
+    return render(request, 'all_groups.html', {'all_groups': all_groups})
 
 
 

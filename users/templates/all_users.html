@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}
+ Все пользователи
+{% endblock %}
+
+
+{% block header %}
+<div class="title">Все пользователи: {{ all_users.count }}</div>
+{% endblock %}
+
+{% block content %}
+<div class="row gtr-150">
+   {% include "author_info.html" with author=request.user  %}
+      <div class="col-8 col-12-medium imp-medium">
+
+        {% for user in all_users %}
+           {% load thumbnail %}
+          {% thumbnail user.profile.avatar "50x50" crop="center" upscale=True as im %}
+          <a href="{% url 'posts:profile' user.username %}"><img  style="border-radius: 120px;" src="{{ im.url }}"/></a>
+          {% endthumbnail %}
+
+                   {% if user.get_full_name}}
+                   <h3 >{{user.get_full_name}}</h3>
+                   {% else %}
+          <h3> </h3>
+          {% endif %}
+                   <p>{{user.username}}</p>
+
+        {% endfor %}
+      </div>
+</div>
+{% endblock %}
