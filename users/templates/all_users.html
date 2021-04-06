@@ -14,9 +14,11 @@
       <div class="col-8 col-12-medium imp-medium">
 
         {% for user in all_users %}
+
           <ul class="style3">
+
            {% load thumbnail %}
-          {% thumbnail user.profile.avatar "100x100" crop="center" upscale=True as im %}
+          {% thumbnail user.profile.avatar "70x70" crop="center" upscale=True as im %}
                   <a href="{% url 'posts:profile' user.username %}"><img style="margin-right: 25px; border-radius: 120px; float: left;" src="{{ im.url }}"/></a>
                    {% endthumbnail %}
 
@@ -28,8 +30,11 @@
               <sup>{{ user.profile.info }}</sup></p>
 
 
+
               </ul>
+          <p>
           <hr>
+
 
 
         {% endfor %}

@@ -21,30 +21,43 @@
 
                 {% load thumbnail %}
               {% thumbnail chat.user1.profile.avatar "70x70" crop="center" upscale=True as im %}
-                   <a href="{% url 'posts:chat' chat.id %}"><img style="margin-right: 25px; border-radius: 120px; float: left;" src="{{ im.url }}"/></a>
+                   <a href="{% url 'posts:profile' chat.user1.username %}"><img style="margin-right: 25px; border-radius: 120px; float: left;" src="{{ im.url }}"/></a>
                    {% endthumbnail %}
 
-                   <a style= padding-left: 10px; href="{% url 'posts:profile' chat.user1.username %}">
+                   <a style= padding-left: 10px; href="{% url 'posts:chat' chat.id %}">
                              @ {{chat.user1.username}}
                             </a>
                    <p style= padding-left: 10px;>
                        {{ chat.user1.get_full_name }}
-                   </p>
+                       <br>
 
+                       {% if chat.last_message.is_readed == False and chat.last_message.recipient == request.user %}
+                       <h1 style= padding-left: 10px;> Новые сообщения </h1>
+                       {% endif %}
+                       <sup style= padding-left: 10px;> {{ chat.last_message.text }}</sup>
+
+                   </p>
 
           {% endif %}
 
           {% if chat.user2 != request.user %}
                 {% load thumbnail %}
               {% thumbnail chat.user2.profile.avatar "70x70" crop="center" upscale=True as im %}
-                  <a href="{% url 'posts:chat' chat.id %}"><img style="margin-right: 25px; border-radius: 120px; float: left;" src="{{ im.url }}"/></a>
+                  <a href="{% url 'posts:profile' chat.user2.username %}"><img style="margin-right: 25px; border-radius: 120px; float: left;" src="{{ im.url }}"/></a>
                    {% endthumbnail %}
 
-                   <a style= padding-left: 10px; href="{% url 'posts:profile' chat.user2.username %}">
+                   <a style= padding-left: 10px; href="{% url 'posts:chat' chat.id %}">
                              @ {{chat.user2.username}}
                             </a>
                    <p style= padding-left: 10px;>
                        {{ chat.user2.get_full_name }}
+                       <br>
+                       {% if chat.last_message.is_readed == False and chat.last_message.recipient == request.user %}
+                       <h1 style= padding-left: 10px;> Новые сообщения </h1>
+                       {% endif %}
+                       <sup style= padding-left: 10px;> {{ chat.last_message.text }}</sup>
+
+
                    </p>
 
 
@@ -52,8 +65,8 @@
 
               </section>
           <hr>
+           {% endfor %}
 
-        {% endfor %}
       </div>
 </div>
 {% endblock %}

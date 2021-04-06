@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
-from django.db.models import Q
+from django.db.models import Q, F, Exists
 from django.db.models import Max, Min
 from django.db.models import Count
 
@@ -258,10 +258,15 @@ def dislike(request, username, post_id):
 @login_required
 def chatrooms(request):
     chatrooms = Chat.objects.filter(
-            Q(user1=request.user) | Q(user2=request.user)).annotate(max_data=Max('messages__msg_date')).order_by("-max_data")
-    print (chatrooms)
-    unreaded_messages = Message.objects.filter(chat__in=chatrooms).filter(is_readed=False)
-    return render(request, 'chatrooms.html', {'chatrooms': chatrooms})
+            Q(user1=request.user) | Q(user2=request.user)).annotate(
+        max_data=Max('messages__msg_date')).order_by("-max_data")
+
+    unreaded_messages = Message.objects.filter(
+        chat__in=chatrooms).filter(
+        is_readed=False).filter(recipient=request.user)
+
+    return render(request, 'chatrooms.html',
+                  {'chatrooms': chatrooms})
 
 
 @login_required
@@ -317,6 +322,8 @@ def message(request, chat_id):
             message.recipient = recipient
             message.chat = chat
             message.save()
+            chat.last_message = message
+            chat.save()
             return redirect('posts:chat', chat_id=chat.id)
 
         return render(request, 'chat.html',

@@ -15,12 +15,14 @@
                   {% thumbnail user.profile.avatar "100x100" crop="center" upscale=True as im %}
                   <a href="{% url 'posts:profile' user.username %}"><img style="margin-right: 25px; border-radius: 120px; float: left;" src="{{ im.url }}"/></a>
                    {% endthumbnail %}
-                  <p style= padding-left: 10px;>
+                  <h1 style= padding-left: 10px;>
                           {{user.get_full_name}}
-                  <p>Комментариев получено: {{user.comments_count}}</p>
+                          </h1>
+                          <sup style= padding-left: 10px;>
+                  Комментариев получено: {{user.comments_count}}
                      <br>
                      Лайков получено: {{user.likes_count}}
-                   </p>
+                   </sup>
 
          </ul>
          <br>
@@ -55,4 +57,5 @@
      </section>
    </div>
  </div>
+
 

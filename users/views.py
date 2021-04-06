@@ -36,11 +36,14 @@ def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
         chat = Chat.objects.create(user1=admin, user2=instance)
-        Message.objects.create(sender=admin,
+        message = Message.objects.create(sender=admin,
                                recipient=instance,
                                text='hello',
                                chat=chat
                                )
+        chat.last_message = message
+        chat.save()
+
 
 def show_all_users(request):
     all_users = User.objects.all()
