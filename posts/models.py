@@ -82,6 +82,9 @@ class Chat(models.Model):
                              blank=True, null=True, related_name="chat1")
     user2 = models.ForeignKey(User, on_delete=models.CASCADE,
                              blank=True, null=True, related_name="chat2")
+    last_message = models.OneToOneField('Message', on_delete=models.CASCADE,
+                             blank=True, null=True,
+                             related_name="last_message")
 
 
 class Message(models.Model):
