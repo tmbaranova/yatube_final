@@ -3,8 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import Q
-from django.db.models import Max, Min
-from django.db.models import Count
+from django.db.models import Max
+
 
 from .forms import CommentForm, PostForm, GroupForm, MessageForm
 from .models import Comment, Follow, Group, Post, Like, Dislike, Message, Chat
@@ -19,7 +19,8 @@ def index(request):
     paginator = Paginator(post_list, PAGE_NUMBERS_FOR_PAGINATOR)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
-    return render(request, 'index.html', {'post_list': post_list, 'page': page})
+    return render(request, 'index.html', {'post_list':
+                                              post_list, 'page': page})
 
 
 def group_posts(request, slug):
@@ -74,10 +75,13 @@ def profile(request, username):
     page = paginator.get_page(page_number)
     chat = None
     results = Chat.objects.filter(
-                Q(user1=request.user) | Q (user1=author)).filter(Q(user2=request.user) | Q (user2=author))
+                Q(user1=request.user) | Q(user1=author)).filter(
+        Q(user2=request.user) | Q(user2=author))
     if results:
         chat = results[0]
-    return render(request, 'profile.html', {"author": author, 'page': page, 'chat': chat, 'is_follower':is_follower})
+    return render(request, 'profile.html',
+                  {"author": author, 'page': page,
+                   'chat': chat, 'is_follower': is_follower})
 
 
 @login_required
@@ -91,7 +95,8 @@ def post_view(request, username, post_id):
     form = CommentForm()
     chat = None
     results = Chat.objects.filter(
-                Q(user1=request.user) | Q (user1=post.author)).filter(Q(user2=request.user) | Q (user2=post.author))
+        Q(user1=request.user) | Q(user1=post.author)).filter(Q(
+        user2=request.user) | Q(user2=post.author))
     if results:
         chat = results[0]
 
@@ -151,10 +156,13 @@ def add_comment(request, username, post_id):
             comment.save()
             return redirect('posts:post', username=username, post_id=post_id)
 
-        return render(request, 'post.html', {'form': form, 'post': post, 'comments': comments})
+        return render(request, 'post.html', {'form': form,
+                                             'post': post,
+                                             'comments': comments})
 
     form = CommentForm()
-    return render(request, 'post.html', {'form': form, 'post': post, 'comments': comments})
+    return render(request, 'post.html', {'form': form,
+                                         'post': post, 'comments': comments})
 
 
 @login_required
@@ -225,7 +233,9 @@ def post_search(request):
     query = request.GET.get('query')
     if query:
         results = Post.objects.filter(
-                Q(text__icontains=query) | Q (author__username__icontains=query) | Q (group__title__icontains=query))
+                Q(text__icontains=query) |
+                Q(author__username__icontains=query) |
+                Q(group__title__icontains=query))
 
         return render(request, 'search.html', {'query': query, 'results': results})
     return render(request, 'search.html')
@@ -248,7 +258,8 @@ def dislike(request, username, post_id):
     post = get_object_or_404(Post, id=post_id)
     like = Like.objects.filter(user=request.user, publication=post)
     if not like:
-        dislike = Dislike.objects.get_or_create(user=request.user, publication=post)
+        dislike = Dislike.objects.get_or_create(
+            user=request.user, publication=post)
         if dislike[1]==False:
             dislike[0].delete()
     prewious_url = request.META.get('HTTP_REFERER')
@@ -258,9 +269,11 @@ def dislike(request, username, post_id):
 @login_required
 def chatrooms(request):
     chatrooms = Chat.objects.filter(
-            Q(user1=request.user) | Q(user2=request.user)).annotate(max_data=Max('messages__msg_date')).order_by("-max_data")
+            Q(user1=request.user) | Q(user2=request.user)).annotate(
+        max_data=Max('messages__msg_date')).order_by("-max_data")
     print (chatrooms)
-    unreaded_messages = Message.objects.filter(chat__in=chatrooms).filter(is_readed=False)
+    unreaded_messages = Message.objects.filter(
+        chat__in=chatrooms).filter(is_readed=False)
     return render(request, 'chatrooms.html', {'chatrooms': chatrooms})
 
 
@@ -325,9 +338,3 @@ def message(request, chat_id):
     form = MessageForm()
     return render(request, 'chat.html',
                   {'form': form, 'chat': chat, 'messages': messages})
-
-
-
-
-
-

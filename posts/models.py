@@ -16,8 +16,9 @@ class Group(models.Model):
 
 
 class Post(models.Model):
-    title = models.CharField(max_length=200, blank=True, null=True, verbose_name='Заголовок',
-                            help_text='Введите заголовок')
+    title = models.CharField(max_length=200, blank=True, null=True,
+                             verbose_name='Заголовок',
+                             help_text='Введите заголовок')
     text = models.TextField(blank=False, verbose_name='Текст',
                             help_text='Введите текст')
     pub_date = models.DateTimeField("date published", auto_now_add=True)
@@ -85,9 +86,11 @@ class Chat(models.Model):
 
 class Message(models.Model):
     sender = models.ForeignKey(User, on_delete=models.CASCADE,
-                             blank=True, null=True, related_name="message_send")
+                               blank=True, null=True,
+                               related_name="message_send")
     recipient = models.ForeignKey(User, on_delete=models.CASCADE,
-                             blank=True, null=True, related_name="message_receive")
+                                  blank=True, null=True,
+                                  related_name="message_receive")
     text = models.TextField(blank=False, verbose_name='Текст',
                             help_text='Введите текст сообщения')
     msg_date = models.DateTimeField("date published", auto_now_add=True)

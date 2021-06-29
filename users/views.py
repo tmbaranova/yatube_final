@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import redirect, render
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -22,7 +22,8 @@ class SignUpView(CreateView):
 @login_required
 def add_info(request):
     profile = Profile.objects.get_or_create(user=request.user)[0]
-    form = ProfileForm(request.POST or None, files=request.FILES or None, instance=profile)
+    form = ProfileForm(request.POST or None, files=request.FILES or None,
+                       instance=profile)
     if not form.is_valid():
         return render(request, 'add_info.html', {'form': form})
 
